@@ -21,17 +21,29 @@ public class LeBron {
                 System.out.println("Bye. Hope to see you again soon!");
                 return;
             } else if (userInput.startsWith("mark ")) {
-                int taskNumber = Integer.parseInt(userInput.substring(5)) - 1;
-                Task temp = taskList.get(taskNumber);
+                try {
+                    int taskNumber = Integer.parseInt(userInput.substring(5)) - 1;
+                    Task temp = taskList.get(taskNumber);
 
-                temp.markAsDone();
-                System.out.printf("Nice! I've marked this task as done:\n%s%n", temp);
+                    temp.markAsDone();
+                    System.out.printf("Nice! I've marked this task as done:\n%s%n", temp);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Error: Task number out of range.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Please enter a valid task number.");
+                }
             } else if (userInput.startsWith("unmark ")) {
-                int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
-                Task temp = taskList.get(taskNumber);
+                try {
+                    int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
+                    Task temp = taskList.get(taskNumber);
 
-                temp.markAsNotDone();
-                System.out.printf("OK, I've marked this task as not done yet:\n%s%n", temp);
+                    temp.markAsNotDone();
+                    System.out.printf("OK, I've marked this task as not done yet:\n%s%n", temp);
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Error: Task number out of range.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Please enter a valid task number.");
+                }
             } else if (userInput.startsWith("todo ")) {
                 String description = userInput.substring(5);
                 Task t = new ToDo(description);
