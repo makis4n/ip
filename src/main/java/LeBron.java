@@ -12,6 +12,7 @@ public class LeBron {
             String userInput = sc.nextLine();
 
             if (userInput.equalsIgnoreCase("list")) {
+                System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskList.size(); i++) {
                     Task temp = taskList.get(i);
                     System.out.printf("%d. %s%n", i + 1, temp);
