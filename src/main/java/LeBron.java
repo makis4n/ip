@@ -15,7 +15,7 @@ public class LeBron {
             if (userInput.equalsIgnoreCase("list")) {
                 for (int i = 0; i < taskList.size(); i++) {
                     Task temp = taskList.get(i);
-                    System.out.printf("%d.[%s] %s%n", i + 1, temp.getStatusIcon(), temp.description);
+                    System.out.printf("%d. %s%n", i + 1, temp);
                 }
             } else if (userInput.equalsIgnoreCase("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
@@ -24,12 +24,12 @@ public class LeBron {
                 int taskNumber = Integer.parseInt(userInput.substring(5)) - 1;
                 Task temp = taskList.get(taskNumber);
                 temp.markAsDone();
-                System.out.printf("Nice! I've marked this task as done:\n[%s] %s%n", temp.getStatusIcon(), temp.description);
+                System.out.printf("Nice! I've marked this task as done:\n%s%n", temp);
             } else if (userInput.startsWith("unmark ")) {
                 int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
                 Task temp = taskList.get(taskNumber);
                 temp.markAsNotDone();
-                System.out.printf("OK, I've marked this task as not done yet:\n[%s] %s%n", temp.getStatusIcon(), temp.description);
+                System.out.printf("OK, I've marked this task as not done yet:\n%s%n", temp);
             } else {
                 taskList.add(t);
                 System.out.printf("Added: %s%n", userInput);
