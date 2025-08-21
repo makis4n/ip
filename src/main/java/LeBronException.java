@@ -1,2 +1,5 @@
-public class LeBronException {
+public class LeBronException extends Exception {
+    public LeBronException(String message) {
+        super(message);
+    }
 }
