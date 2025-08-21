@@ -45,31 +45,66 @@ public class LeBron {
                     System.out.println("Error: Please enter a valid task number.");
                 }
             } else if (userInput.startsWith("todo ")) {
-                String description = userInput.substring(5);
-                Task t = new ToDo(description);
+                try {
+                    String description = userInput.substring(5).trim();
+                    if (description.isEmpty()) {
+                        throw new LeBronException("The description of a todo cannot be empty.");
+                    }
+                    Task t = new ToDo(description);
 
-                taskList.add(t);
-                System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n", t, taskList.size());
+                    taskList.add(t);
+                    System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                            t, taskList.size());
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (userInput.startsWith("deadline ")) {
-                String description = userInput.substring(9, userInput.indexOf("/by") - 1);
-                String by = userInput.substring(userInput.indexOf("/by") + 4);
-                Task t = new Deadline(description, by);
+                try {
+                    String description = userInput.substring(9, userInput.indexOf("/by") - 1).trim();
+                    String by = userInput.substring(userInput.indexOf("/by") + 4).trim();
+                    if (description.isEmpty()) {
+                        throw new LeBronException("The description of a deadline cannot be empty.");
+                    } else if (by.isEmpty()) {
+                        throw new LeBronException("The deadline cannot be empty.");
+                    }
+                    Task t = new Deadline(description, by);
 
-                taskList.add(t);
-                System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n", t, taskList.size());
+                    taskList.add(t);
+                    System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                            t, taskList.size());
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: Wrong format. Use: 'deadline <task> /by <date>'.");
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else if (userInput.startsWith("event ")) {
-                String description = userInput.substring(6, userInput.indexOf("/from") - 1);
-                String start = userInput.substring(userInput.indexOf("/from") + 6, userInput.indexOf("/to") - 1);
-                String end = userInput.substring(userInput.indexOf("/to") + 4);
-                Task t = new Event(description, start, end);
+                try {
+                    String description = userInput.substring(6, userInput.indexOf("/from") - 1).trim();
+                    String start = userInput.substring(userInput.indexOf("/from") + 6, userInput.indexOf("/to") - 1).trim();
+                    String end = userInput.substring(userInput.indexOf("/to") + 4).trim();
+                    if (description.isEmpty()) {
+                        throw new LeBronException("The description of an event cannot be empty.");
+                    } else if (start.isEmpty()) {
+                        throw new LeBronException("The start time of an event cannot be empty.");
+                    } else if (end.isEmpty()) {
+                        throw new LeBronException("The end time of an event cannot be empty.");
+                    }
+                    Task t = new Event(description, start, end);
 
-                taskList.add(t);
-                System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n", t, taskList.size());
+                    taskList.add(t);
+                    System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                            t, taskList.size());
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             } else {
-                Task t = new Task(userInput);
-
-                taskList.add(t);
-                System.out.printf("Added: %s%n", userInput);
+                try {
+                    throw new LeBronException("I'm sorry, but I don't know what that means.");
+                } catch (LeBronException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
