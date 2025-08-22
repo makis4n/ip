@@ -44,6 +44,18 @@ public class LeBron {
                 } catch (NumberFormatException e) {
                     System.out.println("Error: Please enter a valid task number.");
                 }
+            } else if (userInput.startsWith("delete ")) {
+                try {
+                    int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
+                    Task temp = taskList.remove(taskNumber);
+
+                    System.out.printf("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.%n",
+                            temp, taskList.size());
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Error: Task number out of range.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Please enter a valid task number.");
+                }
             } else if (userInput.startsWith("todo ")) {
                 try {
                     String description = userInput.substring(5).trim();
