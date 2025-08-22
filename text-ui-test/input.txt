@@ -18,4 +18,8 @@ event meeting /from     /to Sun
 event meeting /from Mon /to     
 event meeting /to Sun
 abcdef
+delete 10
+delete abc
+delete 1
+list
 bye
