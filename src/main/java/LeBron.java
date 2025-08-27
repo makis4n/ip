@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.io.FileWriter;
 
 import java.io.IOException;
 
@@ -73,27 +74,78 @@ public class LeBron {
         return null;
     }
     
+    /* Writes a task to the data file.
+     * 
+     * @param file The data file to write to.
+     * @param task The task to write.
+     */
+    private static void writeTaskToFile(File file, Task task) {
+        try {
+            StringBuilder sb = new StringBuilder();
+            FileWriter fw = new FileWriter(file.getPath(), true);
+            if (task instanceof ToDo) {
+                sb.append("T|");
+            } else if (task instanceof Deadline) {
+                sb.append("D|");
+            } else if (task instanceof Event) {
+                sb.append("E|");
+            }
+            sb.append(task.isDone ? "1|" : "0|");
+            sb.append(task.description);
+            if (task instanceof Deadline) {
+                sb.append("|").append(((Deadline) task).by);
+            } else if (task instanceof Event) {
+                sb.append("|").append(((Event) task).start).append("|").append(((Event) task).end);
+            }
+            
+            fw.write(sb.toString());
+            fw.write(System.lineSeparator());
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to data file: " + e.getMessage());
+        }
+    }
+    
     public static void main(String[] args) {
         System.out.println("Hello! I'm LeBron.\nWhat can I do for you?");
         
         Scanner sc = new Scanner(System.in);
+        File dataFile = getOrCreateDataFile();
         ArrayList<Task> taskList = new ArrayList<>();
 
+        try {
+            for (String line : Files.readAllLines(dataFile.toPath())) {
+                Task task = parseTask(line);
+                if (task != null) {
+                    taskList.add(task);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading data file: " + e.getMessage());
+        }
+        
         while (true) {
             String userInput = sc.nextLine();
 
-            if (userInput.equalsIgnoreCase("list")) {
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < taskList.size(); i++) {
-                    Task temp = taskList.get(i);
-                    System.out.printf("%d. %s%n", i + 1, temp);
+            if (userInput.trim().equalsIgnoreCase("list")) {
+                if (taskList.isEmpty()) {
+                    System.out.println("No tasks found.");
+                } else {
+                    System.out.println("Here are the tasks in your list:");
+                    for (int i = 0; i < taskList.size(); i++) {
+                        Task temp = taskList.get(i);
+                        System.out.printf("%d. %s%n", i + 1, temp);
+                    }
                 }
-            } else if (userInput.equalsIgnoreCase("bye")) {
+            } else if (userInput.trim().equalsIgnoreCase("bye")) {
+                for (Task task : taskList) {
+                    writeTaskToFile(dataFile, task);
+                }
                 System.out.println("Bye. Hope to see you again soon!");
                 return;
             } else if (userInput.startsWith("mark ")) {
                 try {
-                    int taskNumber = Integer.parseInt(userInput.substring(5)) - 1;
+                    int taskNumber = Integer.parseInt(userInput.substring(5).trim()) - 1;
                     Task temp = taskList.get(taskNumber);
 
                     temp.markAsDone();
@@ -105,7 +157,7 @@ public class LeBron {
                 }
             } else if (userInput.startsWith("unmark ")) {
                 try {
-                    int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
+                    int taskNumber = Integer.parseInt(userInput.substring(7).trim()) - 1;
                     Task temp = taskList.get(taskNumber);
 
                     temp.markAsNotDone();
@@ -117,7 +169,7 @@ public class LeBron {
                 }
             } else if (userInput.startsWith("delete ")) {
                 try {
-                    int taskNumber = Integer.parseInt(userInput.substring(7)) - 1;
+                    int taskNumber = Integer.parseInt(userInput.substring(7).trim()) - 1;
                     Task temp = taskList.remove(taskNumber);
 
                     System.out.printf("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.%n",
