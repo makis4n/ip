@@ -1,10 +1,43 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import java.io.File;
+import java.nio.file.Files;
+
+import java.io.IOException;
+
 public class LeBron {
+    /* Ensures that the data file exists; creates it if it doesn't.
+     * The data file is located in a "data" directory within the user's home directory.
+     * If the "data" directory does not exist, it is created.
+     * 
+     * @return The File object representing the data file.
+     */
+    private static File getOrCreateDataFile() {
+        String home = System.getProperty("user.home");
+        Path directoryPath = Paths.get(home, "data");
+        Path filePath = directoryPath.resolve("LeBron.txt");
+        
+        try {
+            if (!Files.exists(directoryPath)) {
+                Files.createDirectories(directoryPath);
+            }
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
+            }
+        } catch (IOException e) {
+            System.out.println("Error creating data file: " + e.getMessage());
+        }
+        
+        return filePath.toFile();
+    }
+    
     public static void main(String[] args) {
         System.out.println("Hello! I'm LeBron.\nWhat can I do for you?");
-
+        
         Scanner sc = new Scanner(System.in);
         ArrayList<Task> taskList = new ArrayList<>();
 
