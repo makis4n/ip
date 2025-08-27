@@ -35,6 +35,44 @@ public class LeBron {
         return filePath.toFile();
     }
     
+    /* Reads tasks from the data file for populating the task list.
+     * 
+     * @param line A line from the data file representing a task.
+     * @return A Task object created from the line; null if the line is invalid.
+     */
+    private static Task parseTask(String line) {
+        String[] parts = line.split("\\|");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1"); // "1" means done, "0" means not done
+        String description = parts[2];
+
+        switch (type) {
+        case "T": {
+            Task t = new ToDo(description);
+            if (isDone) {
+                t.markAsDone();
+            }
+            return t;
+        }
+        case "D": {
+            Task d = new Deadline(description, parts[3]);
+            if (isDone) {
+                d.markAsDone();
+            }
+            return d;
+        }
+        case "E": {
+            Task e = new Event(description, parts[3], parts[4]);
+            if (isDone) {
+                e.markAsDone();
+            }
+            return e;
+        }
+        }
+        
+        return null;
+    }
+    
     public static void main(String[] args) {
         System.out.println("Hello! I'm LeBron.\nWhat can I do for you?");
         
