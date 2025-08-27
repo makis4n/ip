@@ -43,6 +43,9 @@ public class LeBron {
      */
     private static Task parseTask(String line) {
         String[] parts = line.split("\\|");
+        if (parts.length < 3) {
+            throw new IllegalArgumentException("Invalid task format in data file.");
+        }
         String type = parts[0];
         boolean isDone = parts[1].equals("1"); // "1" means done, "0" means not done
         String description = parts[2];
