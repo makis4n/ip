@@ -8,7 +8,10 @@ import java.io.File;
 import java.nio.file.Files;
 import java.io.FileWriter;
 
+import java.time.LocalDate;
+
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 
 public class LeBron {
     /* Ensures that the data file exists; creates it if it doesn't.
@@ -59,14 +62,14 @@ public class LeBron {
             return t;
         }
         case "D": {
-            Task d = new Deadline(description, parts[3]);
+            Task d = new Deadline(description, LocalDate.parse(parts[3]));
             if (isDone) {
                 d.markAsDone();
             }
             return d;
         }
         case "E": {
-            Task e = new Event(description, parts[3], parts[4]);
+            Task e = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
             if (isDone) {
                 e.markAsDone();
             }
@@ -200,18 +203,23 @@ public class LeBron {
                 try {
                     String description = userInput.substring(9, userInput.indexOf("/by") - 1).trim();
                     String by = userInput.substring(userInput.indexOf("/by") + 4).trim();
+                    
                     if (description.isEmpty()) {
                         throw new LeBronException("The description of a deadline cannot be empty.");
                     } else if (by.isEmpty()) {
                         throw new LeBronException("The deadline cannot be empty.");
                     }
-                    Task t = new Deadline(description, by);
+                    
+                    LocalDate date = LocalDate.parse(by);
+                    Task t = new Deadline(description, date);
 
                     taskList.add(t);
                     System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
                             t, taskList.size());
                 } catch (StringIndexOutOfBoundsException e) {
                     System.out.println("Error: Wrong format. Use: 'deadline <task> /by <date>'.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Error: Please enter the date in YYYY-MM-DD format.");
                 } catch (LeBronException e) {
                     System.out.println(e.getMessage());
                 }
@@ -220,6 +228,7 @@ public class LeBron {
                     String description = userInput.substring(6, userInput.indexOf("/from") - 1).trim();
                     String start = userInput.substring(userInput.indexOf("/from") + 6, userInput.indexOf("/to") - 1).trim();
                     String end = userInput.substring(userInput.indexOf("/to") + 4).trim();
+                    
                     if (description.isEmpty()) {
                         throw new LeBronException("The description of an event cannot be empty.");
                     } else if (start.isEmpty()) {
@@ -227,13 +236,18 @@ public class LeBron {
                     } else if (end.isEmpty()) {
                         throw new LeBronException("The end time of an event cannot be empty.");
                     }
-                    Task t = new Event(description, start, end);
+                    
+                    LocalDate s = LocalDate.parse(start);
+                    LocalDate e = LocalDate.parse(end);
+                    Task t = new Event(description, s, e);
 
                     taskList.add(t);
                     System.out.printf("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
                             t, taskList.size());
                 } catch (StringIndexOutOfBoundsException e) {
                     System.out.println("Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Error: Please enter the date in YYYY-MM-DD format.");
                 } catch (LeBronException e) {
                     System.out.println(e.getMessage());
                 }
