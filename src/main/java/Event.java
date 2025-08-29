@@ -5,6 +5,8 @@ public class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
 
+    /* Constructor for Event class 
+    */
     public Event(String description, LocalDate start, LocalDate end) {
         super(description);
         this.start = start;

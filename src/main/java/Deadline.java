@@ -3,7 +3,9 @@ import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task {
     protected LocalDate by;
-
+    
+    /* Constructor for Deadline class 
+    */
     public Deadline(String description, LocalDate by) {
         super(description);
         this.by = by;

@@ -2,19 +2,27 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    /* Constructor for Task class 
+    */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /* Returns status icon of the task
+    */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
 
+    /* Marks the task as done
+    */
     public void markAsDone() {
         this.isDone = true;
     }
 
+    /* Marks the task as not done
+    */
     public void markAsNotDone() {
         this.isDone = false;
     }
