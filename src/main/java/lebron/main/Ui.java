@@ -1,3 +1,5 @@
+package lebron.main;
+
 import java.util.Scanner;
 
 public class Ui {

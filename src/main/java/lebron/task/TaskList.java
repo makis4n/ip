@@ -1,3 +1,5 @@
+package lebron.task;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -9,6 +11,10 @@ public class TaskList {
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
+    }
+    
+    public ArrayList<Task> getTasks() {
+        return this.tasks;
     }
     
     /* Default constructor to initialize an empty TaskList.

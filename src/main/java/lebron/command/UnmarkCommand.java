@@ -1,14 +1,20 @@
-public class DeleteCommand extends Command {
+package lebron.command;
+
+import lebron.task.Task;
+import lebron.task.TaskList;
+import lebron.main.Storage;
+import lebron.main.Ui;
+import lebron.exception.LeBronException;
+
+public class UnmarkCommand extends Command {
     private String arguments;
     
-    /**
-     * Constructor for DeleteCommand.
-     * @param arguments The arguments provided with the delete command, typically the task number to delete.
-     */
-    public DeleteCommand(String arguments) {
+    /* Constructor for UnmarkCommand class 
+    */
+    public UnmarkCommand(String arguments) {
         this.arguments = arguments;
     }
-    
+
     @Override
     public boolean isExit() {
         return false;
@@ -18,10 +24,10 @@ public class DeleteCommand extends Command {
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {
             int taskNumber = Integer.parseInt(arguments.trim()) - 1;
-            Task temp = taskList.tasks.remove(taskNumber);
+            Task temp = taskList.getTasks().get(taskNumber);
 
-            ui.showMessage(String.format("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.%n",
-                    temp, taskList.tasks.size()));
+            temp.markAsNotDone();
+            ui.showMessage(String.format("OK, I've marked this task as not done yet:\n%s%n", temp));
         } catch (IndexOutOfBoundsException e) {
             throw new LeBronException("Error: Task number out of range.");
         } catch (NumberFormatException e) {

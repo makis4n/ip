@@ -1,3 +1,5 @@
+package lebron.task;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -25,6 +27,14 @@ public class Task {
     */
     public void markAsNotDone() {
         this.isDone = false;
+    }
+    
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public boolean isDone() {
+        return this.isDone;
     }
 
     @Override

@@ -1,3 +1,8 @@
+package lebron.main;
+
+import lebron.task.*;
+import lebron.exception.LeBronException;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -88,12 +93,12 @@ public class Storage {
             } else if (task instanceof Event) {
                 sb.append("E|");
             }
-            sb.append(task.isDone ? "1|" : "0|");
-            sb.append(task.description);
+            sb.append(task.isDone() ? "1|" : "0|");
+            sb.append(task.getDescription());
             if (task instanceof Deadline) {
-                sb.append("|").append(((Deadline) task).by);
+                sb.append("|").append(((Deadline) task).getBy());
             } else if (task instanceof Event) {
-                sb.append("|").append(((Event) task).start).append("|").append(((Event) task).end);
+                sb.append("|").append(((Event) task).getStart()).append("|").append(((Event) task).getEnd());
             }
 
             fw.write(sb.toString());

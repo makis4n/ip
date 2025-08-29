@@ -1,3 +1,5 @@
+package lebron.task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -13,6 +15,14 @@ public class Event extends Task {
         this.end = end;
     }
 
+    public LocalDate getStart() {
+        return this.start;
+    }
+    
+    public LocalDate getEnd() {
+        return this.end;
+    }
+    
     @Override
     public String toString() {
         return "[E]" + super.toString()

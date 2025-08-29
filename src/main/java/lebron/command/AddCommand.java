@@ -1,3 +1,10 @@
+package lebron.command;
+
+import lebron.task.*;
+import lebron.main.Storage;
+import lebron.main.Ui;
+import lebron.exception.LeBronException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -45,9 +52,9 @@ public class AddCommand extends Command {
             }
             Task toDoTask = new ToDo(toDoDescription);
 
-            taskList.tasks.add(toDoTask);
+            taskList.getTasks().add(toDoTask);
             ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            toDoTask, taskList.tasks.size()));
+                            toDoTask, taskList.getTasks().size()));
             break;
         case "D":
             try {
@@ -63,9 +70,9 @@ public class AddCommand extends Command {
                 LocalDate date = LocalDate.parse(by);
                 Task deadlineTask = new Deadline(deadlineDescription, date);
 
-                taskList.tasks.add(deadlineTask);
+                taskList.getTasks().add(deadlineTask);
                 ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            deadlineTask, taskList.tasks.size()));
+                            deadlineTask, taskList.getTasks().size()));
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException("Error: Wrong format. Use: 'deadline <task> /by <date>'.");
             } catch (DateTimeParseException e) {
@@ -90,9 +97,9 @@ public class AddCommand extends Command {
                 LocalDate e = LocalDate.parse(end);
                 Task eventTask = new Event(eventDescription, s, e);
                 
-                taskList.tasks.add(eventTask);
+                taskList.getTasks().add(eventTask);
                 ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            eventTask, taskList.tasks.size()));
+                            eventTask, taskList.getTasks().size()));
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException(
                         "Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
