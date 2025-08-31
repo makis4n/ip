@@ -6,6 +6,7 @@ import lebron.command.AddCommand;
 import lebron.command.Command;
 import lebron.command.DeleteCommand;
 import lebron.command.ExitCommand;
+import lebron.command.FindCommand;
 import lebron.command.ListCommand;
 import lebron.command.MarkCommand;
 import lebron.command.UnmarkCommand;
@@ -81,6 +82,8 @@ public class Parser {
             return new DeleteCommand(arguments);
         case "todo", "event", "deadline":
             return new AddCommand(commandWord, arguments);
+        case "find":
+            return new FindCommand(arguments);
         default:
             throw new LeBronException("I'm sorry, but I don't know what that means.");
         }
