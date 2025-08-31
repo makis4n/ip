@@ -1,16 +1,16 @@
 package lebron.main;
 
-import lebron.task.TaskList;
-import lebron.exception.LeBronException;
 import lebron.command.Command;
+import lebron.exception.LeBronException;
+import lebron.task.TaskList;
 
 public class LeBron {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
-    
+
     /* Constructor for LeBron class.
-     * 
+     *
      * @param filePath The path to the data file for storing tasks.
      */
     public LeBron(String filePath) {
@@ -23,7 +23,13 @@ public class LeBron {
             tasks = new TaskList();
         }
     }
-    
+
+    /* The main method to start the LeBron application.
+     */
+    public static void main(String[] args) {
+        new LeBron("data/tasks.txt").run();
+    }
+
     /* Runs the main command loop for the LeBron application.
      * Continuously reads user commands, parses them, and executes the corresponding actions
      * until an exit command is received.
@@ -41,12 +47,6 @@ public class LeBron {
                 ui.showError(e.getMessage());
             }
         }
-    }
-    
-    /* The main method to start the LeBron application.
-     */
-    public static void main(String[] args) {
-        new LeBron("data/tasks.txt").run();
     }
 }
 

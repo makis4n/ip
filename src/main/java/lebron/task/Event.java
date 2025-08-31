@@ -7,8 +7,8 @@ public class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
 
-    /* Constructor for Event class 
-    */
+    /* Constructor for Event class
+     */
     public Event(String description, LocalDate start, LocalDate end) {
         super(description);
         this.start = start;
@@ -18,11 +18,11 @@ public class Event extends Task {
     public LocalDate getStart() {
         return this.start;
     }
-    
+
     public LocalDate getEnd() {
         return this.end;
     }
-    
+
     @Override
     public String toString() {
         return "[E]" + super.toString()

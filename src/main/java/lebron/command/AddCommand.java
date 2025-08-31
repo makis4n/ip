@@ -1,19 +1,23 @@
 package lebron.command;
 
-import lebron.task.*;
-import lebron.main.Storage;
-import lebron.main.Ui;
-import lebron.exception.LeBronException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
+import lebron.exception.LeBronException;
+import lebron.main.Storage;
+import lebron.main.Ui;
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Task;
+import lebron.task.TaskList;
+import lebron.task.ToDo;
 
 public class AddCommand extends Command {
     private String commandWord;
     private String arguments;
-    
+
     /* Constructor for AddCommand class.
-     * 
+     *
      * @param arguments The arguments provided with the add command.
      */
     public AddCommand(String commandWord, String arguments) {
@@ -22,7 +26,7 @@ public class AddCommand extends Command {
     }
 
     /* Determines the type of task to be added based on the command arguments.
-     * 
+     *
      * @return A string representing the task type.
      */
     public String taskType() {
@@ -36,12 +40,12 @@ public class AddCommand extends Command {
             return "";
         }
     }
-    
+
     @Override
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         switch (taskType()) {
@@ -54,13 +58,13 @@ public class AddCommand extends Command {
 
             taskList.getTasks().add(toDoTask);
             ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            toDoTask, taskList.getTasks().size()));
+                    toDoTask, taskList.getTasks().size()));
             break;
         case "D":
             try {
                 String deadlineDescription = arguments.substring(0, arguments.indexOf("/by")).trim();
                 String by = arguments.substring(arguments.indexOf("/by") + 4).trim();
-                
+
                 if (deadlineDescription.isEmpty()) {
                     throw new LeBronException("The description of a deadline cannot be empty.");
                 } else if (by.isEmpty()) {
@@ -72,7 +76,7 @@ public class AddCommand extends Command {
 
                 taskList.getTasks().add(deadlineTask);
                 ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            deadlineTask, taskList.getTasks().size()));
+                        deadlineTask, taskList.getTasks().size()));
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException("Error: Wrong format. Use: 'deadline <task> /by <date>'.");
             } catch (DateTimeParseException e) {
@@ -96,10 +100,10 @@ public class AddCommand extends Command {
                 LocalDate s = LocalDate.parse(start);
                 LocalDate e = LocalDate.parse(end);
                 Task eventTask = new Event(eventDescription, s, e);
-                
+
                 taskList.getTasks().add(eventTask);
                 ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                            eventTask, taskList.getTasks().size()));
+                        eventTask, taskList.getTasks().size()));
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException(
                         "Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");

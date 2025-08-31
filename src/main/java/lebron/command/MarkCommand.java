@@ -1,14 +1,14 @@
 package lebron.command;
 
-import lebron.task.Task;
-import lebron.task.TaskList;
+import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.exception.LeBronException;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
 public class MarkCommand extends Command {
     private String arguments;
-    
+
     public MarkCommand(String arguments) {
         this.arguments = arguments;
     }
@@ -17,7 +17,7 @@ public class MarkCommand extends Command {
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {
