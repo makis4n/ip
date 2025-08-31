@@ -9,6 +9,10 @@ import lebron.exception.LeBronException;
 public class MarkCommand extends Command {
     private String arguments;
     
+    /**
+     * Constructor for MarkCommand.
+     * @param arguments The arguments provided with the mark command, typically the task number to mark as done.
+     */
     public MarkCommand(String arguments) {
         this.arguments = arguments;
     }

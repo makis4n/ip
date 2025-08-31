@@ -33,6 +33,8 @@ public class Task {
         return this.description;
     }
     
+    /* Returns true if the task is done, false otherwise
+    */
     public boolean isDone() {
         return this.isDone;
     }
