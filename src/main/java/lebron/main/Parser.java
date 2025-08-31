@@ -72,6 +72,8 @@ public class Parser {
             return new DeleteCommand(arguments);
         case "todo", "event", "deadline": 
             return new AddCommand(commandWord, arguments);
+        case "find":
+            return new FindCommand(arguments);
         default: 
             throw new LeBronException("I'm sorry, but I don't know what that means.");
         }
