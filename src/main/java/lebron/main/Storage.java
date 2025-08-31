@@ -1,28 +1,31 @@
 package lebron.main;
 
-import lebron.task.*;
-import lebron.exception.LeBronException;
-
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.IOException;
 import java.util.ArrayList;
+
+import lebron.exception.LeBronException;
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Task;
+import lebron.task.ToDo;
 
 
 public class Storage {
     private final Path filePath;
     private final File dataFile;
-    
+
     /* Constructor to initialize the Storage with the specified file path.
      * If the file does not exist, it is created along with any necessary directories.
      */
     public Storage(String pathString) {
         this.filePath = Paths.get(pathString);
         this.dataFile = filePath.toFile();
-        
+
         ensureFileExists();
     }
 
@@ -37,7 +40,7 @@ public class Storage {
             if (parentDirectory != null && !Files.exists(parentDirectory)) {
                 Files.createDirectories(parentDirectory);
             }
-            
+
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
             }
@@ -45,16 +48,16 @@ public class Storage {
             System.out.println("Error creating file: " + e.getMessage());
         }
     }
-    
+
     /* Loads tasks from the data file into an ArrayList.
      * Each line in the data file is parsed into a Task object using the Parser class.
-     * 
+     *
      * @return An ArrayList of Task objects loaded from the data file.
      * @throws LeBronException If there is an error reading the data file.
      */
     public ArrayList<Task> load() throws LeBronException {
         ArrayList<Task> tasks = new ArrayList<>();
-        
+
         try {
             for (String line : Files.readAllLines(dataFile.toPath())) {
                 Task task = Parser.parseTask(line);
@@ -65,18 +68,18 @@ public class Storage {
         } catch (IOException e) {
             throw new LeBronException("Error reading data file: " + e.getMessage());
         }
-        
+
         return tasks;
     }
 
     /* Returns the data file used for storing tasks.
-     * 
+     *
      * @return The data file.
      */
     public File getDataFile() {
         return dataFile;
     }
-    
+
     /* Writes a task to the data file.
      *
      * @param file The data file to write to.

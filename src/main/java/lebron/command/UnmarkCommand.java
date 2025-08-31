@@ -1,16 +1,16 @@
 package lebron.command;
 
-import lebron.task.Task;
-import lebron.task.TaskList;
+import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.exception.LeBronException;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
 public class UnmarkCommand extends Command {
     private String arguments;
-    
-    /* Constructor for UnmarkCommand class 
-    */
+
+    /* Constructor for UnmarkCommand class
+     */
     public UnmarkCommand(String arguments) {
         this.arguments = arguments;
     }
@@ -19,7 +19,7 @@ public class UnmarkCommand extends Command {
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {

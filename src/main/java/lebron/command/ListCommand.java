@@ -1,17 +1,17 @@
 package lebron.command;
 
-import lebron.task.Task;
-import lebron.task.TaskList;
+import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.exception.LeBronException;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
 public class ListCommand extends Command {
     @Override
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         if (taskList.getTasks().isEmpty()) {

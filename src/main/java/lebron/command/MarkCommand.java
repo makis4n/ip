@@ -1,14 +1,14 @@
 package lebron.command;
 
-import lebron.task.Task;
-import lebron.task.TaskList;
+import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.exception.LeBronException;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
 public class MarkCommand extends Command {
     private String arguments;
-    
+
     /**
      * Constructor for MarkCommand.
      * @param arguments The arguments provided with the mark command, typically the task number to mark as done.
@@ -21,7 +21,7 @@ public class MarkCommand extends Command {
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {

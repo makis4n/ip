@@ -1,27 +1,28 @@
 package lebron.command;
 
-import lebron.task.TaskList;
-import lebron.task.Task;
+import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.exception.LeBronException;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
 public class DeleteCommand extends Command {
     private String arguments;
-    
+
     /**
      * Constructor for DeleteCommand.
+     *
      * @param arguments The arguments provided with the delete command, typically the task number to delete.
      */
     public DeleteCommand(String arguments) {
         this.arguments = arguments;
     }
-    
+
     @Override
     public boolean isExit() {
         return false;
     }
-    
+
     @Override
     public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {

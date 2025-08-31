@@ -1,10 +1,19 @@
 package lebron.main;
 
-import lebron.task.*;
-import lebron.command.*;
-import lebron.exception.LeBronException;
-
 import java.time.LocalDate;
+
+import lebron.command.AddCommand;
+import lebron.command.Command;
+import lebron.command.DeleteCommand;
+import lebron.command.ExitCommand;
+import lebron.command.ListCommand;
+import lebron.command.MarkCommand;
+import lebron.command.UnmarkCommand;
+import lebron.exception.LeBronException;
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Task;
+import lebron.task.ToDo;
 
 public class Parser {
     /* Reads tasks from the data file for populating the task list.
@@ -22,34 +31,34 @@ public class Parser {
         String description = parts[2];
 
         switch (type) {
-            case "T": {
-                Task t = new ToDo(description);
-                if (isDone) {
-                    t.markAsDone();
-                }
-                return t;
+        case "T": {
+            Task t = new ToDo(description);
+            if (isDone) {
+                t.markAsDone();
             }
-            case "D": {
-                Task d = new Deadline(description, LocalDate.parse(parts[3]));
-                if (isDone) {
-                    d.markAsDone();
-                }
-                return d;
+            return t;
+        }
+        case "D": {
+            Task d = new Deadline(description, LocalDate.parse(parts[3]));
+            if (isDone) {
+                d.markAsDone();
             }
-            case "E": {
-                Task e = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
-                if (isDone) {
-                    e.markAsDone();
-                }
-                return e;
+            return d;
+        }
+        case "E": {
+            Task e = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
+            if (isDone) {
+                e.markAsDone();
             }
+            return e;
+        }
         }
 
         return null;
     }
-    
+
     /* Parses user input to create the appropriate Command object.
-     * 
+     *
      * @param fullCommand The full command input by the user.
      * @return A Command object corresponding to the user's command.
      * @throws LeBronException If the command is unrecognized or invalid.
@@ -60,19 +69,19 @@ public class Parser {
         String arguments = words.length > 1 ? words[1] : "";
 
         switch (commandWord) {
-        case "list": 
-            return new ListCommand(); 
-        case "bye": 
+        case "list":
+            return new ListCommand();
+        case "bye":
             return new ExitCommand();
-        case "mark": 
+        case "mark":
             return new MarkCommand(arguments);
-        case "unmark": 
+        case "unmark":
             return new UnmarkCommand(arguments);
-        case "delete": 
+        case "delete":
             return new DeleteCommand(arguments);
-        case "todo", "event", "deadline": 
+        case "todo", "event", "deadline":
             return new AddCommand(commandWord, arguments);
-        default: 
+        default:
             throw new LeBronException("I'm sorry, but I don't know what that means.");
         }
     }

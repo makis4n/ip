@@ -1,9 +1,13 @@
 package lebron.main;
 
-import lebron.task.*;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Task;
+import lebron.task.ToDo;
 
 public class ParserTest {
     @Test
