@@ -29,8 +29,12 @@ public class LeBron {
             tasks = new TaskList();
         }
     }
+    public LeBron() {
+        this("data/tasks.txt");
+    }
 
-    /* The main method to start the LeBron application.
+    /**
+     * The main method to start the LeBron application.
      */
     public static void main(String[] args) {
         new LeBron("data/tasks.txt").run();
@@ -53,6 +57,13 @@ public class LeBron {
                 ui.showError(e.getMessage());
             }
         }
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "LeBron heard: " + input;
     }
 }
 
