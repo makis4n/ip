@@ -1,7 +1,11 @@
 package lebron.task;
 
+/**
+ * Represents a task that is a to-do item.
+ */
 public class ToDo extends Task {
-    /* Constructor for ToDo class
+    /**
+     *  Constructor for ToDo class
      */
     public ToDo(String description) {
         super(description);

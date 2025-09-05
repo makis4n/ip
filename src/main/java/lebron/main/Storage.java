@@ -14,12 +14,16 @@ import lebron.task.Event;
 import lebron.task.Task;
 import lebron.task.ToDo;
 
-
+/**
+ * The Storage class is responsible for managing the storage of tasks in a file.
+ * It handles loading tasks from the file, ensuring the file exists, and writing tasks to the file.
+ */
 public class Storage {
     private final Path filePath;
     private final File dataFile;
 
-    /* Constructor to initialize the Storage with the specified file path.
+    /**
+     *  Constructor to initialize the Storage with the specified file path.
      * If the file does not exist, it is created along with any necessary directories.
      */
     public Storage(String pathString) {
@@ -29,7 +33,8 @@ public class Storage {
         ensureFileExists();
     }
 
-    /* Ensures that the data file exists; creates it if it doesn't.
+    /**
+     *  Ensures that the data file exists; creates it if it doesn't.
      * The data file is located in a "data" directory within the user's home directory.
      * If the "data" directory does not exist, it is created.
      */
@@ -49,7 +54,8 @@ public class Storage {
         }
     }
 
-    /* Loads tasks from the data file into an ArrayList.
+    /**
+     *  Loads tasks from the data file into an ArrayList.
      * Each line in the data file is parsed into a Task object using the Parser class.
      *
      * @return An ArrayList of Task objects loaded from the data file.
@@ -72,7 +78,8 @@ public class Storage {
         return tasks;
     }
 
-    /* Returns the data file used for storing tasks.
+    /**
+     *  Returns the data file used for storing tasks.
      *
      * @return The data file.
      */
@@ -80,9 +87,9 @@ public class Storage {
         return dataFile;
     }
 
-    /* Writes a task to the data file.
+    /**
+     *  Writes a task to the data file.
      *
-     * @param file The data file to write to.
      * @param task The task to write.
      */
     public void writeTaskToFile(Task task) {

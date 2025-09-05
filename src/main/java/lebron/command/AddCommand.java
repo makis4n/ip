@@ -12,11 +12,15 @@ import lebron.task.Task;
 import lebron.task.TaskList;
 import lebron.task.ToDo;
 
+/**
+ * Represents a command to add a task (ToDo, Deadline, or Event) to the task list.
+ */
 public class AddCommand extends Command {
     private String commandWord;
     private String arguments;
 
-    /* Constructor for AddCommand class.
+    /**
+     * Constructor for AddCommand class.
      *
      * @param arguments The arguments provided with the add command.
      */
@@ -25,7 +29,8 @@ public class AddCommand extends Command {
         this.arguments = arguments;
     }
 
-    /* Determines the type of task to be added based on the command arguments.
+    /**
+     * Determines the type of task to be added based on the command arguments.
      *
      * @return A string representing the task type.
      */

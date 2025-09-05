@@ -5,6 +5,10 @@ import lebron.main.Storage;
 import lebron.main.Ui;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command that can be executed in the LeBron application.
+ * Each command performs a specific action on the task list, user interface, and storage.
+ */
 public abstract class Command {
     /**
      * Returns true if this command signals the application to exit.

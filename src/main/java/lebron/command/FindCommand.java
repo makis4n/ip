@@ -1,9 +1,13 @@
 package lebron.command;
 
-import lebron.task.*;
 import lebron.main.Storage;
 import lebron.main.Ui;
+import lebron.task.Task;
+import lebron.task.TaskList;
 
+/**
+ * Represents a command to find and list tasks that contain a specific keyword in their description.
+ */
 public class FindCommand extends Command {
     private String arguments;
 

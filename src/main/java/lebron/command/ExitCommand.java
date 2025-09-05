@@ -6,6 +6,10 @@ import lebron.main.Ui;
 import lebron.task.Task;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command to exit the application.
+ * When executed, it saves all tasks to storage and displays a goodbye message.
+ */
 public class ExitCommand extends Command {
     @Override
     public boolean isExit() {

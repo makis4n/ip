@@ -6,6 +6,9 @@ import lebron.main.Ui;
 import lebron.task.Task;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
     private String arguments;
 

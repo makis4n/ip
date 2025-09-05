@@ -6,6 +6,10 @@ import lebron.main.Ui;
 import lebron.task.Task;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command to unmark a task as not done in the task list.
+ * When executed, it updates the specified task's status and displays a confirmation message.
+ */
 public class UnmarkCommand extends Command {
     private String arguments;
 

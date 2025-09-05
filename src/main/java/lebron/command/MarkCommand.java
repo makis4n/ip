@@ -6,6 +6,10 @@ import lebron.main.Ui;
 import lebron.task.Task;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command to mark a task as done in the task list.
+ * When executed, it updates the specified task's status and displays a confirmation message.
+ */
 public class MarkCommand extends Command {
     private String arguments;
 

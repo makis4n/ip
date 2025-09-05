@@ -16,8 +16,13 @@ import lebron.task.Event;
 import lebron.task.Task;
 import lebron.task.ToDo;
 
+/**
+ * The Parser class is responsible for parsing user input and data file lines
+ * to create appropriate Command and Task objects.
+ */
 public class Parser {
-    /* Reads tasks from the data file for populating the task list.
+    /**
+     * Reads tasks from the data file for populating the task list.
      *
      * @param line A line from the data file representing a task.
      * @return A Task object created from the line; null if the line is invalid.
@@ -53,12 +58,13 @@ public class Parser {
             }
             return e;
         }
+        default:
+            return null;
         }
-
-        return null;
     }
 
-    /* Parses user input to create the appropriate Command object.
+    /**
+     *  Parses user input to create the appropriate Command object.
      *
      * @param fullCommand The full command input by the user.
      * @return A Command object corresponding to the user's command.

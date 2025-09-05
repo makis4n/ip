@@ -6,6 +6,10 @@ import lebron.main.Ui;
 import lebron.task.Task;
 import lebron.task.TaskList;
 
+/**
+ * Represents a command to list all tasks in the task list.
+ * When executed, it displays all tasks with their corresponding numbers.
+ */
 public class ListCommand extends Command {
     @Override
     public boolean isExit() {
