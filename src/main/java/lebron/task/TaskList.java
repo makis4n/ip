@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Manages a list of tasks, allowing for addition, removal, and retrieval of tasks.
  */
 public class TaskList {
-    ArrayList<Task> tasks;
+    private ArrayList<Task> tasks;
 
     /**
      * Constructor to initialize the TaskList with an existing list of tasks.
