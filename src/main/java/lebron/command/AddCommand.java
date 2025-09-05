@@ -52,7 +52,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         switch (taskType()) {
         case "T":
             String toDoDescription = arguments.trim();
@@ -62,9 +62,8 @@ public class AddCommand extends Command {
             Task toDoTask = new ToDo(toDoDescription);
 
             taskList.getTasks().add(toDoTask);
-            ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                    toDoTask, taskList.getTasks().size()));
-            break;
+            return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                    toDoTask, taskList.getTasks().size());
         case "D":
             try {
                 String deadlineDescription = arguments.substring(0, arguments.indexOf("/by")).trim();
@@ -80,14 +79,13 @@ public class AddCommand extends Command {
                 Task deadlineTask = new Deadline(deadlineDescription, date);
 
                 taskList.getTasks().add(deadlineTask);
-                ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                        deadlineTask, taskList.getTasks().size()));
+                return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                        deadlineTask, taskList.getTasks().size());
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException("Error: Wrong format. Use: 'deadline <task> /by <date>'.");
             } catch (DateTimeParseException e) {
                 throw new LeBronException("Error: Please enter the date in YYYY-MM-DD format.");
             }
-            break;
         case "E":
             try {
                 String eventDescription = arguments.substring(0, arguments.indexOf("/from")).trim();
@@ -107,15 +105,14 @@ public class AddCommand extends Command {
                 Task eventTask = new Event(eventDescription, s, e);
 
                 taskList.getTasks().add(eventTask);
-                ui.showMessage(String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                        eventTask, taskList.getTasks().size()));
+                return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
+                        eventTask, taskList.getTasks().size());
             } catch (StringIndexOutOfBoundsException e) {
                 throw new LeBronException(
                         "Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
             } catch (DateTimeParseException e) {
                 throw new LeBronException("Error: Please enter the date in YYYY-MM-DD format.");
             }
-            break;
         default:
             throw new LeBronException("I'm sorry, but I don't know what that means.");
         }

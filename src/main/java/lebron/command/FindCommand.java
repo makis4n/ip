@@ -21,11 +21,10 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) {
+    public String execute(TaskList taskList, Ui ui, Storage storage) {
         String keyword = arguments.trim();
         if (keyword.isEmpty()) {
-            ui.showMessage("The keyword for find cannot be empty.");
-            return;
+            return "The keyword for find cannot be empty.";
         }
 
         StringBuilder foundTasks = new StringBuilder("Here are the matching tasks in your list:\n");
@@ -39,9 +38,9 @@ public class FindCommand extends Command {
         }
 
         if (count == 0) {
-            ui.showMessage("No matching tasks found.");
+            return "No matching tasks found.";
         } else {
-            ui.showMessage(foundTasks.toString());
+            return foundTasks.toString();
         }
     }
 }

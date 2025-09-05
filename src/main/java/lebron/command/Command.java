@@ -16,13 +16,13 @@ public abstract class Command {
     public abstract boolean isExit();
 
     /**
-     * Executes the command, performing its specific action on the given task list,
-     * user interface, and storage.
+     * Executes the command with the given task list, user interface, and storage.
      *
-     * @param taskList The current list of tasks.
-     * @param ui       The user interface for displaying messages.
-     * @param storage  The storage system for saving tasks.
+     * @param taskList The task list to operate on.
+     * @param ui The user interface for displaying messages.
+     * @param storage The storage for saving tasks.
+     * @return A string message to be displayed to the user after execution.
      * @throws LeBronException If an error occurs during command execution.
      */
-    public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException;
+    public abstract String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException;
 }

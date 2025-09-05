@@ -51,7 +51,8 @@ public class LeBron {
             try {
                 String fullCommand = ui.readCommand();
                 Command c = Parser.parse(fullCommand);
-                c.execute(tasks, ui, storage);
+                String response = c.execute(tasks, ui, storage);
+                ui.showMessage(response);
                 isExit = c.isExit();
             } catch (LeBronException e) {
                 ui.showError(e.getMessage());
@@ -63,7 +64,12 @@ public class LeBron {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "LeBron heard: " + input;
+        try {
+            Command c = Parser.parse(input);
+            return c.execute(tasks, ui, storage);
+        } catch (LeBronException e) {
+            return e.getMessage();
+        }
     }
 }
 

@@ -17,15 +17,16 @@ public class ListCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         if (taskList.getTasks().isEmpty()) {
-            ui.showMessage("No tasks found.");
+            return "No tasks found.";
         } else {
-            ui.showMessage("Here are the tasks in your list:");
+            StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
             for (int i = 0; i < taskList.getTasks().size(); i++) {
                 Task temp = taskList.getTasks().get(i);
-                ui.showMessage(String.format("%d. %s", i + 1, temp));
+                sb.append(String.format("%d. %s\n", i + 1, temp));
             }
+            return sb.toString();
         }
     }
 }

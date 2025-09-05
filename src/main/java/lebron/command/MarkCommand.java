@@ -27,13 +27,13 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         try {
             int taskNumber = Integer.parseInt(arguments.trim()) - 1;
             Task temp = taskList.getTasks().get(taskNumber);
 
             temp.markAsDone();
-            ui.showMessage(String.format("Nice! I've marked this task as done:\n%s%n", temp));
+            return String.format("Nice! I've marked this task as done:\n%s%n", temp);
         } catch (IndexOutOfBoundsException e) {
             throw new LeBronException("Error: Task number out of range.");
         } catch (NumberFormatException e) {

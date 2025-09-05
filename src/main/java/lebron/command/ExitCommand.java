@@ -17,10 +17,10 @@ public class ExitCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
+    public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
         for (Task task : taskList.getTasks()) {
             storage.writeTaskToFile(task);
         }
-        ui.showMessage("Bye. Hope to see you again soon!");
+        return "Bye. Hope to see you again soon!";
     }
 }
