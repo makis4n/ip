@@ -36,6 +36,8 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        // Default style for User dialog (purple)
+        dialog.getStyleClass().add("user-label");
     }
 
     /**
@@ -46,6 +48,9 @@ public class DialogBox extends HBox {
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
+        // Change style for LeBron dialog (gold)
+        dialog.getStyleClass().remove("user-label");
+        dialog.getStyleClass().add("reply-label");
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
