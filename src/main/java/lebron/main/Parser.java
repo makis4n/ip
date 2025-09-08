@@ -28,38 +28,51 @@ public class Parser {
      * @return A Task object created from the line; null if the line is invalid.
      */
     public static Task parseTask(String line) {
-        String[] parts = line.split("\\|");
-        if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid task format in data file.");
-        }
+        String[] parts = splitTaskIfValid(line);
         String type = parts[0];
         boolean isDone = parts[1].equals("1"); // "1" means done, "0" means not done
         String description = parts[2];
 
+        Task task = createTaskByType(type, description, parts);
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
+    }
+
+    /**
+     * Splits a task line into its components and validates the format.
+     *
+     * @param line A line from the data file representing a task.
+     * @return An array of strings containing the task components.
+     * @throws IllegalArgumentException If the task format is invalid.
+     */
+    private static String[] splitTaskIfValid(String line) {
+        String[] parts = line.split("\\|");
+        if (parts.length < 3) {
+            throw new IllegalArgumentException("Invalid task format in data file.");
+        }
+        return parts;
+    }
+    /**
+     * Creates a Task object based on its type and other details.
+     *
+     * @param type        The type of task ("T", "D", or "E").
+     * @param description The description of the task.
+     * @param parts       The array of task components from the data file line.
+     * @return A Task object corresponding to the type and details.
+     * @throws IllegalArgumentException If the task type is invalid.
+     */
+    private static Task createTaskByType(String type, String description, String[] parts) {
         switch (type) {
-        case "T": {
-            Task t = new ToDo(description);
-            if (isDone) {
-                t.markAsDone();
-            }
-            return t;
-        }
-        case "D": {
-            Task d = new Deadline(description, LocalDate.parse(parts[3]));
-            if (isDone) {
-                d.markAsDone();
-            }
-            return d;
-        }
-        case "E": {
-            Task e = new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
-            if (isDone) {
-                e.markAsDone();
-            }
-            return e;
-        }
+        case "T":
+            return new ToDo(description);
+        case "D":
+            return new Deadline(description, LocalDate.parse(parts[3]));
+        case "E":
+            return new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
         default:
-            return null;
+            throw new IllegalArgumentException("Invalid task format in data file.");
         }
     }
 
@@ -75,6 +88,17 @@ public class Parser {
         String commandWord = words[0];
         String arguments = words.length > 1 ? words[1] : "";
 
+        return createCommand(commandWord, arguments);
+    }
+    /**
+     * Creates a Command object based on the command word and its arguments.
+     *
+     * @param commandWord The command word (e.g., "list", "mark", "todo").
+     * @param arguments   The arguments associated with the command.
+     * @return A Command object corresponding to the command word and arguments.
+     * @throws LeBronException If the command word is unrecognized.
+     */
+    private static Command createCommand(String commandWord, String arguments) throws LeBronException {
         switch (commandWord) {
         case "list":
             return new ListCommand();
