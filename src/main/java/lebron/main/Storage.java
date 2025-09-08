@@ -27,10 +27,12 @@ public class Storage {
      * If the file does not exist, it is created along with any necessary directories.
      */
     public Storage(String pathString) {
+        assert pathString != null && !pathString.trim().isEmpty() : "File path should not be null or empty";
         this.filePath = Paths.get(pathString);
         this.dataFile = filePath.toFile();
 
         ensureFileExists();
+        assert Files.exists(filePath) : "Data file should exist after ensureFileExists()";
     }
 
     /**
