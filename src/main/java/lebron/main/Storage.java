@@ -34,28 +34,41 @@ public class Storage {
     }
 
     /**
-     *  Ensures that the data file exists; creates it if it doesn't.
-     * The data file is located in a "data" directory within the user's home directory.
-     * If the "data" directory does not exist, it is created.
+     * Ensures that the data file exists; creates it and its parent directories if they don't exist.
      */
     public void ensureFileExists() {
         try {
-            Path parentDirectory = filePath.getParent();
-
-            if (parentDirectory != null && !Files.exists(parentDirectory)) {
-                Files.createDirectories(parentDirectory);
-            }
-
-            if (!Files.exists(filePath)) {
-                Files.createFile(filePath);
-            }
+            ensureDirectoryExists();
+            createFileIfNotExists();
         } catch (IOException e) {
             System.out.println("Error creating file: " + e.getMessage());
         }
     }
 
     /**
-     *  Loads tasks from the data file into an ArrayList.
+     * Ensures that the parent directory of the file path exists; creates it if it doesn't.
+     *
+     * @throws IOException if there is an error creating the directory.
+     */
+    private void ensureDirectoryExists() throws IOException {
+        Path parentDirectory = filePath.getParent();
+        if (parentDirectory != null && !Files.exists(parentDirectory)) {
+            Files.createDirectories(parentDirectory);
+        }
+    }
+    /**
+     * Creates the data file if it does not already exist.
+     *
+     * @throws IOException If there is an error creating the file.
+     */
+    private void createFileIfNotExists() throws IOException {
+        if (!Files.exists(filePath)) {
+            Files.createFile(filePath);
+        }
+    }
+
+    /**
+     * Loads tasks from the data file into an ArrayList.
      * Each line in the data file is parsed into a Task object using the Parser class.
      *
      * @return An ArrayList of Task objects loaded from the data file.
@@ -65,11 +78,9 @@ public class Storage {
         ArrayList<Task> tasks = new ArrayList<>();
 
         try {
-            for (String line : Files.readAllLines(dataFile.toPath())) {
+            for (String line : Files.readAllLines(dataFile.toPath())) { // Read each line from the file
                 Task task = Parser.parseTask(line);
-                if (task != null) {
-                    tasks.add(task);
-                }
+                tasks.add(task);
             }
         } catch (IOException e) {
             throw new LeBronException("Error reading data file: " + e.getMessage());
@@ -79,43 +90,69 @@ public class Storage {
     }
 
     /**
-     *  Returns the data file used for storing tasks.
+     * Appends a task to the data file in a specific format.
      *
-     * @return The data file.
+     * @param task The Task object to be written to the file.
+     * @throws LeBronException If there is an error writing to the file.
      */
-    public File getDataFile() {
-        return dataFile;
+    public void writeTaskToFile(Task task) throws LeBronException {
+        try (FileWriter fw = new FileWriter(dataFile.getPath(), true)) {
+            String taskLine = formatTaskForStorage(task);
+            fw.write(taskLine);
+            fw.write(System.lineSeparator());
+        } catch (IOException e) {
+            throw new LeBronException("Failed to write task to file: " + e.getMessage());
+        }
+    }
+    /**
+     * Formats a Task object into a string suitable for storage in the data file.
+     *
+     * @param task The Task object to format.
+     * @return A string representation of the task for storage.
+     */
+    private String formatTaskForStorage(Task task) {
+        StringBuilder sb = new StringBuilder();
+
+        // Add task type
+        sb.append(getTaskTypeCode(task)).append("|");
+
+        // Add completion status
+        sb.append(task.isDone() ? "1" : "0").append("|");
+
+        // Add description
+        sb.append(task.getDescription());
+
+        // Add type-specific data
+        appendTypeSpecificData(sb, task);
+
+        return sb.toString();
     }
 
     /**
-     *  Writes a task to the data file.
+     * Returns the task type code based on the instance type of the Task.
      *
-     * @param task The task to write.
+     * @param task The Task object.
+     * @return A string representing the task type code ("T", "D", or "E").
+     * @throws IllegalArgumentException If the task type is unknown.
      */
-    public void writeTaskToFile(Task task) {
-        try {
-            StringBuilder sb = new StringBuilder();
-            FileWriter fw = new FileWriter(dataFile.getPath(), true);
-            if (task instanceof ToDo) {
-                sb.append("T|");
-            } else if (task instanceof Deadline) {
-                sb.append("D|");
-            } else if (task instanceof Event) {
-                sb.append("E|");
-            }
-            sb.append(task.isDone() ? "1|" : "0|");
-            sb.append(task.getDescription());
-            if (task instanceof Deadline) {
-                sb.append("|").append(((Deadline) task).getBy());
-            } else if (task instanceof Event) {
-                sb.append("|").append(((Event) task).getStart()).append("|").append(((Event) task).getEnd());
-            }
+    private String getTaskTypeCode(Task task) {
+        if (task instanceof ToDo) {
+            return "T";
+        }
+        if (task instanceof Deadline) {
+            return "D";
+        }
+        if (task instanceof Event) {
+            return "E";
+        }
+        throw new IllegalArgumentException("Unknown task type: " + task.getClass());
+    }
 
-            fw.write(sb.toString());
-            fw.write(System.lineSeparator());
-            fw.close();
-        } catch (IOException e) {
-            System.out.println("Error writing to data file: " + e.getMessage());
+    private void appendTypeSpecificData(StringBuilder sb, Task task) {
+        if (task instanceof Deadline deadline) {
+            sb.append("|").append(deadline.getBy());
+        } else if (task instanceof Event event) {
+            sb.append("|").append(event.getStart()).append("|").append(event.getEnd());
         }
     }
 }
