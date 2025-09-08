@@ -39,4 +39,18 @@ public class TaskList {
     public int getSize() {
         return tasks.size();
     }
+    public boolean isEmpty() {
+        return tasks.isEmpty();
+    }
+    public Task getTask(int index) {
+        return tasks.get(index);
+    }
+    /**
+     * Removes a task from the task list by its index.
+     *
+     * @param index The index of the task to be removed.
+     */
+    public Task removeTask(int index) {
+        return tasks.remove(index);
+    }
 }
