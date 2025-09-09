@@ -1,6 +1,7 @@
 package lebron.task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Manages a list of tasks, allowing for addition, removal, and retrieval of tasks.
@@ -46,11 +47,15 @@ public class TaskList {
         return tasks.get(index);
     }
     /**
-     * Removes a task from the task list by its index.
+     * Removes tasks from the task list based on the provided list of indices.
      *
-     * @param index The index of the task to be removed.
+     * @param tasksToDelete An ArrayList of integers representing the indices of tasks to be removed.
      */
-    public Task removeTask(int index) {
-        return tasks.remove(index);
+    public void removeTasks(ArrayList<Integer> tasksToDelete) {
+        // Sort indices in descending order to avoid shifting issues during removal
+        tasksToDelete.sort(Comparator.reverseOrder());
+        for (int index : tasksToDelete) {
+            tasks.remove(index);
+        }
     }
 }

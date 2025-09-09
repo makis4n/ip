@@ -1,9 +1,10 @@
 package lebron.command;
 
+import java.util.ArrayList;
+
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
-import lebron.task.Task;
 import lebron.task.TaskList;
 
 /**
@@ -28,37 +29,48 @@ public class DeleteCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
-        int taskNumber = getTaskNumberIfValid();
-        Task temp = taskList.removeTask(taskNumber);
+        ArrayList<Integer> tasksToDelete = getTasksIfValid();
+        String successfulRemoveMessage = removeTaskMessage(taskList, tasksToDelete);
+        taskList.removeTasks(tasksToDelete);
 
-        return removeTaskMessage(temp, taskList);
+        return successfulRemoveMessage;
     }
 
     /**
-     * Parses and validates the task number from the command arguments.
+     * Parses and validates the task numbers from the command arguments.
      *
-     * @return The zero-based index of the task to be deleted.
-     * @throws LeBronException If the task number is invalid or out of range.
+     * @return A list of task indices to be deleted.
      */
-    private int getTaskNumberIfValid() throws LeBronException {
+    private ArrayList<Integer> getTasksIfValid() throws LeBronException {
         try {
-            return Integer.parseInt(arguments.trim()) - 1;
-        } catch (IndexOutOfBoundsException e) {
-            throw new LeBronException("Error: Task number out of range.");
+            String[] indexStrings = arguments.split(" ");
+            ArrayList<Integer> taskIndices = new ArrayList<>();
+            for (String index : indexStrings) {
+                taskIndices.add(Integer.parseInt(index.trim()) - 1);
+            }
+            return taskIndices;
         } catch (NumberFormatException e) {
-            throw new LeBronException("Error: Please enter a valid task number.");
+            throw new LeBronException("Error: Please enter valid task numbers.");
         }
     }
-
     /**
-     * Formats the message to be displayed after a task is removed.
+     * Formats the message to be displayed after tasks are deleted.
      *
-     * @param task The task that was removed.
-     * @param taskList The current task list.
+     * @param taskList      The current task list.
+     * @param tasksToDelete The list of task indices that were deleted.
      * @return A formatted string message.
      */
-    private String removeTaskMessage(Task task, TaskList taskList) {
-        return String.format("Noted. I've removed this task:\n%s\nNow you have %d tasks in the list.%n",
-                task, taskList.getSize());
+    private String removeTaskMessage(TaskList taskList, ArrayList<Integer> tasksToDelete) throws LeBronException {
+        try {
+            StringBuilder removedTasks = new StringBuilder();
+            for (int index : tasksToDelete) {
+                removedTasks.append(String.format("%d. %s\n", index + 1, taskList.getTask(index)));
+            }
+
+            return String.format("Noted. I've removed the tasks:\n%s\nNow you have %d tasks in the list.%n",
+                    removedTasks, taskList.getSize() - tasksToDelete.size());
+        } catch (IndexOutOfBoundsException e) {
+            throw new LeBronException("Error: One or more task numbers out of range.");
+        }
     }
 }
