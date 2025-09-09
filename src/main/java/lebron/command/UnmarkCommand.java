@@ -11,7 +11,7 @@ import lebron.task.TaskList;
  * When executed, it updates the specified task's status and displays a confirmation message.
  */
 public class UnmarkCommand extends Command {
-    private String arguments;
+    private final String arguments;
 
     /* Constructor for UnmarkCommand class
      */
@@ -26,16 +26,34 @@ public class UnmarkCommand extends Command {
 
     @Override
     public String execute(TaskList taskList, Ui ui, Storage storage) throws LeBronException {
+        Task taskToMark = getTaskIfValid(taskList);
+        taskToMark.markAsNotDone();
+        return unmarkTaskMessage(taskToMark);
+    }
+
+    /**
+     * Parses and validates the task number from the command arguments.
+     * @param taskList The current task list.
+     * @return The task to be unmarked as not done.
+     * @throws LeBronException If the task number is invalid or out of range.
+     */
+    private Task getTaskIfValid(TaskList taskList) throws LeBronException {
         try {
             int taskNumber = Integer.parseInt(arguments.trim()) - 1;
-            Task temp = taskList.getTasks().get(taskNumber);
-
-            temp.markAsNotDone();
-            return String.format("OK, I've marked this task as not done yet:\n%s%n", temp);
+            return taskList.getTask(taskNumber);
         } catch (IndexOutOfBoundsException e) {
             throw new LeBronException("Error: Task number out of range.");
         } catch (NumberFormatException e) {
             throw new LeBronException("Error: Please enter a valid task number.");
         }
+    }
+
+    /**
+     * Formats the message to be displayed after a task is unmarked as not done.
+     * @param task The task that was unmarked as not done.
+     * @return A formatted string message.
+     */
+    private String unmarkTaskMessage(Task task) {
+        return String.format("OK, I've marked this task as not done yet:\n%s%n", task);
     }
 }

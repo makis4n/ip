@@ -9,9 +9,10 @@ import lebron.task.TaskList;
  * It initializes the application components and starts the command loop.
  */
 public class LeBron {
-    private Storage storage;
-    private TaskList tasks;
-    private Ui ui;
+    private static final String FILE_PATH = "data/tasks.txt";
+    private final Storage storage;
+    private final TaskList tasks;
+    private final Ui ui;
     /**
      * Constructs a LeBron application with the specified file path for storage.
      * Initializes the UI, storage, and task list components.
@@ -22,15 +23,27 @@ public class LeBron {
     public LeBron(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-        try {
-            tasks = new TaskList(storage.load());
-        } catch (LeBronException e) {
-            ui.showLoadingError();
-            tasks = new TaskList();
-        }
+        tasks = getTaskList();
     }
     public LeBron() {
-        this("data/tasks.txt");
+        this(FILE_PATH);
+    }
+
+    /**
+     * Loads the task list from storage.
+     * If loading fails, returns an empty task list and shows a loading error message.
+     *
+     * @return The loaded TaskList or an empty TaskList if loading fails.
+     */
+    private TaskList getTaskList() {
+        TaskList taskList;
+        try {
+            taskList = new TaskList(storage.load());
+        } catch (LeBronException e) {
+            ui.showLoadingError();
+            taskList = new TaskList();
+        }
+        return taskList;
     }
 
     /**
@@ -48,16 +61,27 @@ public class LeBron {
         ui.showWelcome();
         boolean isExit = false;
         while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command c = Parser.parse(fullCommand); // Parse the command or throw exception
-                String response = c.execute(tasks, ui, storage);
-                ui.showMessage(response);
-                isExit = c.isExit();
-            } catch (LeBronException e) {
-                ui.showError(e.getMessage());
-            }
+            isExit = processNextCommand();
         }
+    }
+    /**
+     * Processes the next user command.
+     * Reads the command, parses it, executes it, and shows the response.
+     * Catches and displays any exceptions that occur during processing.
+     *
+     * @return true if the command is an exit command, false otherwise.
+     */
+    private boolean processNextCommand() {
+        try {
+            String fullCommand = ui.readCommand();
+            Command c = Parser.parse(fullCommand);
+            String response = c.execute(tasks, ui, storage);
+            ui.showMessage(response);
+            return c.isExit();
+        } catch (LeBronException e) {
+            ui.showError(e.getMessage());
+        }
+        return false;
     }
 
     /**

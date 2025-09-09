@@ -13,7 +13,7 @@ import lebron.task.TaskList;
  * Represents a command to find and list tasks that contain a specific keyword in their description.
  */
 public class FindCommand extends Command {
-    private String arguments;
+    private final String arguments;
 
     public FindCommand(String arguments) {
         this.arguments = arguments;
@@ -69,5 +69,6 @@ public class FindCommand extends Command {
                     .collect(Collectors.joining("\n"));
             return result;
         }
+        return foundTasks.toString();
     }
 }
