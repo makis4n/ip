@@ -11,6 +11,7 @@ public class Task {
      *  Constructor for Task class
      */
     public Task(String description) {
+        assert description != null && !description.trim().isEmpty() : "Task description should not be empty";
         this.description = description;
         this.isDone = false;
     }

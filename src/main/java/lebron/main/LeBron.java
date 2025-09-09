@@ -50,7 +50,7 @@ public class LeBron {
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand();
-                Command c = Parser.parse(fullCommand);
+                Command c = Parser.parse(fullCommand); // Parse the command or throw exception
                 String response = c.execute(tasks, ui, storage);
                 ui.showMessage(response);
                 isExit = c.isExit();
