@@ -2,6 +2,8 @@ package lebron.main;
 
 import java.util.Scanner;
 
+import lebron.exception.LeBronException;
+
 /**
  * Handles user interactions, including displaying messages and reading input.
  */
@@ -30,10 +32,17 @@ public class Ui {
     }
 
     /**
-     * Reads a line of input from the user.
+     * Reads a command from the user input.
+     *
+     * @return The command entered by the user.
+     * @throws LeBronException If the input is empty.
      */
-    public String readCommand() {
-        return sc.nextLine();
+    public String readCommand() throws LeBronException {
+        String userInput = sc.nextLine();
+        if (userInput.isEmpty()) {
+            throw new LeBronException("Input cannot be empty. Please enter a command.");
+        }
+        return userInput;
     }
 
     /**
@@ -43,6 +52,7 @@ public class Ui {
      */
     public void showMessage(String... message) {
         for (String msg : message) {
+            assert !msg.trim().isEmpty() : "Message to display should not be empty";
             System.out.println(msg);
         }
     }

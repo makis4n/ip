@@ -84,6 +84,7 @@ public class Parser {
      * @throws LeBronException If the command is unrecognized or invalid.
      */
     public static Command parse(String fullCommand) throws LeBronException {
+        assert !fullCommand.trim().isEmpty() : "User input should not be empty";
         String[] words = fullCommand.split(" ", 2);
         String commandWord = words[0];
         String arguments = words.length > 1 ? words[1] : "";
