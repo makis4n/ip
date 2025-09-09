@@ -69,6 +69,5 @@ public class FindCommand extends Command {
                     .collect(Collectors.joining("\n"));
             return result;
         }
-        return foundTasks.toString();
     }
 }
