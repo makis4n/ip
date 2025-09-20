@@ -97,6 +97,11 @@ public class AddCommand extends Command {
      * @throws LeBronException If there is an error in parsing the date or if the description is empty.
      */
     private Task createDeadlineTask() throws LeBronException {
+        // Check if /by delimiter exists
+        if (!arguments.contains(Constants.BY_DELIMITER)) {
+            throw new LeBronException(Constants.DEADLINE_BY_EMPTY_ERROR);
+        }
+
         String deadlineDescription = arguments.substring(0, arguments.indexOf(Constants.BY_DELIMITER)).trim();
         String by = arguments.substring(arguments.indexOf(Constants.BY_DELIMITER)
                 + Constants.BY_DELIMITER.length()).trim();
@@ -108,8 +113,6 @@ public class AddCommand extends Command {
             return new Deadline(deadlineDescription, date);
         } catch (DateTimeParseException e) {
             throw new LeBronException(Constants.DATE_FORMAT_ERROR);
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new LeBronException(Constants.EVENT_FORMAT_ERROR);
         }
     }
 
@@ -120,9 +123,14 @@ public class AddCommand extends Command {
      * @throws LeBronException If there is an error in parsing the dates or if any field is empty.
      */
     private Task createEventTask() throws LeBronException {
+        // Check if required delimiters exist
+        if (!arguments.contains(Constants.FROM_DELIMITER) || !arguments.contains(Constants.TO_DELIMITER)) {
+            throw new LeBronException(Constants.EVENT_FORMAT_ERROR);
+        }
+
         String eventDescription = arguments.substring(0, arguments.indexOf(Constants.FROM_DELIMITER)).trim();
         String start = arguments.substring(arguments.indexOf(Constants.FROM_DELIMITER)
-                + Constants.FROM_DELIMITER.length() + 1, arguments.indexOf(Constants.TO_DELIMITER) - 1).trim();
+                + Constants.FROM_DELIMITER.length(), arguments.indexOf(Constants.TO_DELIMITER)).trim();
         String end = arguments.substring(arguments.indexOf(Constants.TO_DELIMITER)
                 + Constants.TO_DELIMITER.length()).trim();
         validateNotEmpty(eventDescription, Constants.EVENT_EMPTY_ERROR);
@@ -135,8 +143,6 @@ public class AddCommand extends Command {
             return new Event(eventDescription, startDate, endDate);
         } catch (DateTimeParseException e) {
             throw new LeBronException(Constants.DATE_FORMAT_ERROR);
-        } catch (StringIndexOutOfBoundsException e) {
-            throw new LeBronException(Constants.EVENT_FORMAT_ERROR);
         }
     }
 
