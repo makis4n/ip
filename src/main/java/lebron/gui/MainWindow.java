@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import lebron.common.Constants;
 import lebron.main.LeBron;
 
 /**
@@ -35,6 +36,10 @@ public class MainWindow extends AnchorPane {
     /** Injects the LeBron instance */
     public void setLeBron(LeBron d) {
         lebron = d;
+        // Show welcome message when GUI opens
+        dialogContainer.getChildren().add(
+                DialogBox.getLeBronDialog(Constants.UI_WELCOME, leBronImage)
+        );
     }
 
     /**
