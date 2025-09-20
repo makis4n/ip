@@ -121,7 +121,8 @@ public class Storage {
         sb.append(getTaskTypeCode(task)).append(Constants.STORAGE_SEPARATOR_WRITE);
 
         // Add completion status
-        sb.append(task.isDone() ? Constants.DONE_FLAG : Constants.NOT_DONE_FLAG).append(Constants.STORAGE_SEPARATOR_WRITE);
+        sb.append(task.isDone() ? Constants.DONE_FLAG : Constants.NOT_DONE_FLAG)
+                .append(Constants.STORAGE_SEPARATOR_WRITE);
 
         // Add description
         sb.append(task.getDescription());
@@ -156,7 +157,8 @@ public class Storage {
         if (task instanceof Deadline deadline) {
             sb.append(Constants.STORAGE_SEPARATOR_WRITE).append(deadline.getBy());
         } else if (task instanceof Event event) {
-            sb.append(Constants.STORAGE_SEPARATOR_WRITE).append(event.getStart()).append(Constants.STORAGE_SEPARATOR_WRITE)
+            sb.append(Constants.STORAGE_SEPARATOR_WRITE).append(event.getStart())
+                    .append(Constants.STORAGE_SEPARATOR_WRITE)
                     .append(event.getEnd());
         }
     }

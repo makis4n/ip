@@ -98,7 +98,8 @@ public class AddCommand extends Command {
      */
     private Task createDeadlineTask() throws LeBronException {
         String deadlineDescription = arguments.substring(0, arguments.indexOf(Constants.BY_DELIMITER)).trim();
-        String by = arguments.substring(arguments.indexOf(Constants.BY_DELIMITER) + Constants.BY_DELIMITER.length()).trim();
+        String by = arguments.substring(arguments.indexOf(Constants.BY_DELIMITER)
+                + Constants.BY_DELIMITER.length()).trim();
         validateNotEmpty(deadlineDescription, Constants.DEADLINE_EMPTY_ERROR);
         validateNotEmpty(by, Constants.DEADLINE_BY_EMPTY_ERROR);
 
@@ -120,8 +121,10 @@ public class AddCommand extends Command {
      */
     private Task createEventTask() throws LeBronException {
         String eventDescription = arguments.substring(0, arguments.indexOf(Constants.FROM_DELIMITER)).trim();
-        String start = arguments.substring(arguments.indexOf(Constants.FROM_DELIMITER) + Constants.FROM_DELIMITER.length() + 1, arguments.indexOf(Constants.TO_DELIMITER) - 1).trim();
-        String end = arguments.substring(arguments.indexOf(Constants.TO_DELIMITER) + Constants.TO_DELIMITER.length()).trim();
+        String start = arguments.substring(arguments.indexOf(Constants.FROM_DELIMITER)
+                + Constants.FROM_DELIMITER.length() + 1, arguments.indexOf(Constants.TO_DELIMITER) - 1).trim();
+        String end = arguments.substring(arguments.indexOf(Constants.TO_DELIMITER)
+                + Constants.TO_DELIMITER.length()).trim();
         validateNotEmpty(eventDescription, Constants.EVENT_EMPTY_ERROR);
         validateNotEmpty(start, Constants.EVENT_START_EMPTY_ERROR);
         validateNotEmpty(end, Constants.EVENT_END_EMPTY_ERROR);
