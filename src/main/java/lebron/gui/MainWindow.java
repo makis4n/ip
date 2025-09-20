@@ -36,6 +36,7 @@ public class MainWindow extends AnchorPane {
     /** Injects the LeBron instance */
     public void setLeBron(LeBron d) {
         lebron = d;
+
         // Show welcome message when GUI opens
         dialogContainer.getChildren().add(
                 DialogBox.getLeBronDialog(Constants.UI_WELCOME, leBronImage)
@@ -57,4 +58,3 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
     }
 }
-
