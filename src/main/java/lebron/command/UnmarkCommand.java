@@ -1,5 +1,6 @@
 package lebron.command;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -42,9 +43,9 @@ public class UnmarkCommand extends Command {
             int taskNumber = Integer.parseInt(arguments.trim()) - 1;
             return taskList.getTask(taskNumber);
         } catch (IndexOutOfBoundsException e) {
-            throw new LeBronException("Error: Task number out of range.");
+            throw new LeBronException(Constants.TASK_NUMBER_OUT_OF_RANGE_ERROR_SINGLE);
         } catch (NumberFormatException e) {
-            throw new LeBronException("Error: Please enter a valid task number.");
+            throw new LeBronException(Constants.INVALID_TASK_NUMBER_ERROR_SINGLE);
         }
     }
 
@@ -54,6 +55,6 @@ public class UnmarkCommand extends Command {
      * @return A formatted string message.
      */
     private String unmarkTaskMessage(Task task) {
-        return String.format("OK, I've marked this task as not done yet:\n%s%n", task);
+        return String.format(Constants.UNMARK_TASK_MESSAGE_FORMAT, task);
     }
 }

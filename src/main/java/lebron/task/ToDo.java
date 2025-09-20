@@ -1,5 +1,7 @@
 package lebron.task;
 
+import lebron.common.Constants;
+
 /**
  * Represents a task that is a to-do item.
  */
@@ -13,6 +15,6 @@ public class ToDo extends Task {
 
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return Constants.TYPE_PREFIX_T + super.toString();
     }
 }

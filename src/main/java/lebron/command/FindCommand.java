@@ -3,6 +3,7 @@ package lebron.command;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -39,7 +40,7 @@ public class FindCommand extends Command {
      */
     private void assertKeywordNotEmpty(String keyword) throws LeBronException {
         if (keyword.isEmpty()) {
-            throw new LeBronException("The keyword for find cannot be empty.");
+            throw new LeBronException(Constants.EMPTY_KEYWORD_ERROR);
         }
     }
     /**
@@ -61,9 +62,9 @@ public class FindCommand extends Command {
      */
     private String formatMatchingTasks(List<Task> matchingTasks, TaskList taskList) {
         if (matchingTasks.isEmpty()) {
-            return "No matching tasks found.";
+            return Constants.NO_MATCHING_TASKS_MESSAGE;
         } else {
-            String result = "Here are the matching tasks in your list:\n";
+            String result = Constants.MATCHING_TASKS_HEADER;
             result += matchingTasks.stream()
                     .map(task -> (taskList.getTasks().indexOf(task) + 1) + ". " + task)
                     .collect(Collectors.joining("\n"));

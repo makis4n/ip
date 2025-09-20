@@ -1,5 +1,6 @@
 package lebron.command;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -11,6 +12,7 @@ import lebron.task.TaskList;
  * When executed, it saves all tasks to storage and displays a goodbye message.
  */
 public class ExitCommand extends Command {
+
     @Override
     public boolean isExit() {
         return true;
@@ -21,6 +23,6 @@ public class ExitCommand extends Command {
         for (Task task : taskList.getTasks()) {
             storage.writeTaskToFile(task);
         }
-        return "Bye. Hope to see you again soon!";
+        return Constants.EXIT_MESSAGE;
     }
 }

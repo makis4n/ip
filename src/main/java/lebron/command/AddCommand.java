@@ -3,6 +3,7 @@ package lebron.command;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -35,12 +36,12 @@ public class AddCommand extends Command {
      * @return A string representing the task type.
      */
     public String taskType() {
-        if (commandWord.equalsIgnoreCase("todo")) {
-            return "T";
-        } else if (commandWord.equalsIgnoreCase("deadline")) {
-            return "D";
-        } else if (commandWord.equalsIgnoreCase("event")) {
-            return "E";
+        if (commandWord.equalsIgnoreCase(Constants.TODO_COMMAND)) {
+            return Constants.TASK_TYPE_T;
+        } else if (commandWord.equalsIgnoreCase(Constants.DEADLINE_COMMAND)) {
+            return Constants.TASK_TYPE_D;
+        } else if (commandWord.equalsIgnoreCase(Constants.EVENT_COMMAND)) {
+            return Constants.TASK_TYPE_E;
         } else {
             return "";
         }
@@ -66,14 +67,14 @@ public class AddCommand extends Command {
      */
     private Task createTask() throws LeBronException {
         switch (taskType()) {
-        case "T":
+        case Constants.TASK_TYPE_T:
             return createToDoTask();
-        case "D":
+        case Constants.TASK_TYPE_D:
             return createDeadlineTask();
-        case "E":
+        case Constants.TASK_TYPE_E:
             return createEventTask();
         default:
-            throw new LeBronException("I'm sorry, but I don't know what that means.");
+            throw new LeBronException(Constants.UNKNOWN_COMMAND_ERROR);
         }
     }
 
@@ -85,7 +86,7 @@ public class AddCommand extends Command {
      */
     private Task createToDoTask() throws LeBronException {
         String description = arguments.trim();
-        validateNotEmpty(description, "The description of a todo cannot be empty.");
+        validateNotEmpty(description, Constants.TODO_EMPTY_ERROR);
         return new ToDo(description);
     }
 
@@ -96,18 +97,18 @@ public class AddCommand extends Command {
      * @throws LeBronException If there is an error in parsing the date or if the description is empty.
      */
     private Task createDeadlineTask() throws LeBronException {
-        String deadlineDescription = arguments.substring(0, arguments.indexOf("/by")).trim();
-        String by = arguments.substring(arguments.indexOf("/by") + 4).trim();
-        validateNotEmpty(deadlineDescription, "The description of a deadline cannot be empty.");
-        validateNotEmpty(by, "The deadline cannot be empty.");
+        String deadlineDescription = arguments.substring(0, arguments.indexOf(Constants.BY_DELIMITER)).trim();
+        String by = arguments.substring(arguments.indexOf(Constants.BY_DELIMITER) + Constants.BY_DELIMITER.length()).trim();
+        validateNotEmpty(deadlineDescription, Constants.DEADLINE_EMPTY_ERROR);
+        validateNotEmpty(by, Constants.DEADLINE_BY_EMPTY_ERROR);
 
         try {
             LocalDate date = LocalDate.parse(by);
             return new Deadline(deadlineDescription, date);
         } catch (DateTimeParseException e) {
-            throw new LeBronException("Error: Please enter the date in YYYY-MM-DD format.");
+            throw new LeBronException(Constants.DATE_FORMAT_ERROR);
         } catch (StringIndexOutOfBoundsException e) {
-            throw new LeBronException("Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
+            throw new LeBronException(Constants.EVENT_FORMAT_ERROR);
         }
     }
 
@@ -118,21 +119,21 @@ public class AddCommand extends Command {
      * @throws LeBronException If there is an error in parsing the dates or if any field is empty.
      */
     private Task createEventTask() throws LeBronException {
-        String eventDescription = arguments.substring(0, arguments.indexOf("/from")).trim();
-        String start = arguments.substring(arguments.indexOf("/from") + 6, arguments.indexOf("/to") - 1).trim();
-        String end = arguments.substring(arguments.indexOf("/to") + 4).trim();
-        validateNotEmpty(eventDescription, "The description of an event cannot be empty.");
-        validateNotEmpty(start, "The start time of an event cannot be empty.");
-        validateNotEmpty(end, "The end time of an event cannot be empty.");
+        String eventDescription = arguments.substring(0, arguments.indexOf(Constants.FROM_DELIMITER)).trim();
+        String start = arguments.substring(arguments.indexOf(Constants.FROM_DELIMITER) + Constants.FROM_DELIMITER.length() + 1, arguments.indexOf(Constants.TO_DELIMITER) - 1).trim();
+        String end = arguments.substring(arguments.indexOf(Constants.TO_DELIMITER) + Constants.TO_DELIMITER.length()).trim();
+        validateNotEmpty(eventDescription, Constants.EVENT_EMPTY_ERROR);
+        validateNotEmpty(start, Constants.EVENT_START_EMPTY_ERROR);
+        validateNotEmpty(end, Constants.EVENT_END_EMPTY_ERROR);
 
         try {
             LocalDate startDate = LocalDate.parse(start);
             LocalDate endDate = LocalDate.parse(end);
             return new Event(eventDescription, startDate, endDate);
         } catch (DateTimeParseException e) {
-            throw new LeBronException("Error: Please enter the date in YYYY-MM-DD format.");
+            throw new LeBronException(Constants.DATE_FORMAT_ERROR);
         } catch (StringIndexOutOfBoundsException e) {
-            throw new LeBronException("Error: Wrong format. Use: 'event <task> /from <start time> /to <end time>'.");
+            throw new LeBronException(Constants.EVENT_FORMAT_ERROR);
         }
     }
 
@@ -157,7 +158,6 @@ public class AddCommand extends Command {
      * @return A formatted success message.
      */
     private String formatSuccessMessage(Task task, int totalTasks) {
-        return String.format("Got it. I've added this task:\n%s\nNow you have %d tasks in the list.%n",
-                task, totalTasks);
+        return String.format(Constants.SUCCESS_MESSAGE_FORMAT, task, totalTasks);
     }
 }

@@ -3,6 +3,8 @@ package lebron.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import lebron.common.Constants;
+
 /**
  * Represents a task with a deadline.
  */
@@ -24,6 +26,6 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return Constants.TYPE_PREFIX_D + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern(Constants.DISPLAY_DATE_PATTERN)) + ")";
     }
 }

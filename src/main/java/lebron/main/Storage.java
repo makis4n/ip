@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.task.Deadline;
 import lebron.task.Event;
@@ -27,7 +28,7 @@ public class Storage {
      * If the file does not exist, it is created along with any necessary directories.
      */
     public Storage(String pathString) {
-        assert pathString != null && !pathString.trim().isEmpty() : "File path should not be null or empty";
+        assert pathString != null && !pathString.trim().isEmpty() : Constants.ERROR_EMPTY_FILEPATH;
         this.filePath = Paths.get(pathString);
         this.dataFile = filePath.toFile();
 
@@ -43,7 +44,7 @@ public class Storage {
             ensureDirectoryExists();
             createFileIfNotExists();
         } catch (IOException e) {
-            System.out.println("Error creating file: " + e.getMessage());
+            System.out.println(Constants.IO_ERROR_CREATING_FILE + e.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public class Storage {
                 tasks.add(task);
             }
         } catch (IOException e) {
-            throw new LeBronException("Error reading data file: " + e.getMessage());
+            throw new LeBronException(Constants.IO_ERROR_READING_FILE + e.getMessage());
         }
 
         return tasks;
@@ -103,9 +104,10 @@ public class Storage {
             fw.write(taskLine);
             fw.write(System.lineSeparator());
         } catch (IOException e) {
-            throw new LeBronException("Failed to write task to file: " + e.getMessage());
+            throw new LeBronException(Constants.IO_ERROR_WRITING_FILE + e.getMessage());
         }
     }
+
     /**
      * Formats a Task object into a string suitable for storage in the data file.
      *
@@ -116,10 +118,10 @@ public class Storage {
         StringBuilder sb = new StringBuilder();
 
         // Add task type
-        sb.append(getTaskTypeCode(task)).append("|");
+        sb.append(getTaskTypeCode(task)).append(Constants.STORAGE_SEPARATOR_WRITE);
 
         // Add completion status
-        sb.append(task.isDone() ? "1" : "0").append("|");
+        sb.append(task.isDone() ? Constants.DONE_FLAG : Constants.NOT_DONE_FLAG).append(Constants.STORAGE_SEPARATOR_WRITE);
 
         // Add description
         sb.append(task.getDescription());
@@ -139,22 +141,23 @@ public class Storage {
      */
     private String getTaskTypeCode(Task task) {
         if (task instanceof ToDo) {
-            return "T";
+            return Constants.TASK_TYPE_T;
         }
         if (task instanceof Deadline) {
-            return "D";
+            return Constants.TASK_TYPE_D;
         }
         if (task instanceof Event) {
-            return "E";
+            return Constants.TASK_TYPE_E;
         }
         throw new IllegalArgumentException("Unknown task type: " + task.getClass());
     }
 
     private void appendTypeSpecificData(StringBuilder sb, Task task) {
         if (task instanceof Deadline deadline) {
-            sb.append("|").append(deadline.getBy());
+            sb.append(Constants.STORAGE_SEPARATOR_WRITE).append(deadline.getBy());
         } else if (task instanceof Event event) {
-            sb.append("|").append(event.getStart()).append("|").append(event.getEnd());
+            sb.append(Constants.STORAGE_SEPARATOR_WRITE).append(event.getStart()).append(Constants.STORAGE_SEPARATOR_WRITE)
+                    .append(event.getEnd());
         }
     }
 }

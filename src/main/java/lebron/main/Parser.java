@@ -2,6 +2,7 @@ package lebron.main;
 
 import java.time.LocalDate;
 
+import lebron.common.Constants;
 import lebron.command.AddCommand;
 import lebron.command.Command;
 import lebron.command.DeleteCommand;
@@ -30,7 +31,7 @@ public class Parser {
     public static Task parseTask(String line) {
         String[] parts = splitTaskIfValid(line);
         String type = parts[0];
-        boolean isDone = parts[1].equals("1"); // "1" means done, "0" means not done
+        boolean isDone = parts[1].equals(Constants.DONE_FLAG); // "1" means done, "0" means not done
         String description = parts[2];
 
         Task task = createTaskByType(type, description, parts);
@@ -48,9 +49,9 @@ public class Parser {
      * @throws IllegalArgumentException If the task format is invalid.
      */
     private static String[] splitTaskIfValid(String line) {
-        String[] parts = line.split("\\|");
+        String[] parts = line.split(Constants.STORAGE_SEPARATOR);
         if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid task format in data file.");
+            throw new IllegalArgumentException(Constants.ERROR_INVALID_TASK_FORMAT);
         }
         return parts;
     }
@@ -65,14 +66,14 @@ public class Parser {
      */
     private static Task createTaskByType(String type, String description, String[] parts) {
         switch (type) {
-        case "T":
+        case Constants.TASK_TYPE_T:
             return new ToDo(description);
-        case "D":
+        case Constants.TASK_TYPE_D:
             return new Deadline(description, LocalDate.parse(parts[3]));
-        case "E":
+        case Constants.TASK_TYPE_E:
             return new Event(description, LocalDate.parse(parts[3]), LocalDate.parse(parts[4]));
         default:
-            throw new IllegalArgumentException("Invalid task format in data file.");
+            throw new IllegalArgumentException(Constants.ERROR_INVALID_TASK_FORMAT);
         }
     }
 
@@ -116,7 +117,7 @@ public class Parser {
         case "find":
             return new FindCommand(arguments);
         default:
-            throw new LeBronException("I'm sorry, but I don't know what that means.");
+            throw new LeBronException(Constants.ERROR_UNKNOWN_COMMAND);
         }
     }
 }

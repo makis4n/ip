@@ -2,6 +2,7 @@ package lebron.main;
 
 import java.util.Scanner;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 
 /**
@@ -21,14 +22,14 @@ public class Ui {
      * Displays a loading error message when tasks cannot be loaded from the file.
      */
     public void showLoadingError() {
-        System.out.println("Error loading tasks from file. Starting with an empty task list.");
+        System.out.println(Constants.UI_LOADING_ERROR);
     }
 
     /**
      * Displays a welcome message to the user.
      */
     public void showWelcome() {
-        System.out.println("Hello! I'm LeBron.\nWhat can I do for you?");
+        System.out.println(Constants.UI_WELCOME);
     }
 
     /**
@@ -40,7 +41,7 @@ public class Ui {
     public String readCommand() throws LeBronException {
         String userInput = sc.nextLine();
         if (userInput.isEmpty()) {
-            throw new LeBronException("Input cannot be empty. Please enter a command.");
+            throw new LeBronException(Constants.UI_INPUT_EMPTY_ERROR);
         }
         return userInput;
     }

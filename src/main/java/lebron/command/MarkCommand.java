@@ -1,5 +1,6 @@
 package lebron.command;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -44,9 +45,9 @@ public class MarkCommand extends Command {
             int taskNumber = Integer.parseInt(arguments.trim()) - 1;
             return taskList.getTask(taskNumber);
         } catch (IndexOutOfBoundsException e) {
-            throw new LeBronException("Error: Task number out of range.");
+            throw new LeBronException(Constants.TASK_NUMBER_OUT_OF_RANGE_ERROR_SINGLE);
         } catch (NumberFormatException e) {
-            throw new LeBronException("Error: Please enter a valid task number.");
+            throw new LeBronException(Constants.INVALID_TASK_NUMBER_ERROR_SINGLE);
         }
     }
     /**
@@ -55,6 +56,6 @@ public class MarkCommand extends Command {
      * @return A formatted string message.
      */
     private String markTaskMessage(Task task) {
-        return String.format("Nice! I've marked this task as done:\n%s%n", task);
+        return String.format(Constants.MARK_TASK_MESSAGE_FORMAT, task);
     }
 }

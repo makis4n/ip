@@ -1,6 +1,7 @@
 package lebron.main;
 
 import lebron.command.Command;
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.task.TaskList;
 
@@ -9,7 +10,6 @@ import lebron.task.TaskList;
  * It initializes the application components and starts the command loop.
  */
 public class LeBron {
-    private static final String FILE_PATH = "data/tasks.txt";
     private final Storage storage;
     private final TaskList tasks;
     private final Ui ui;
@@ -26,7 +26,7 @@ public class LeBron {
         tasks = getTaskList();
     }
     public LeBron() {
-        this(FILE_PATH);
+        this(Constants.DEFAULT_FILE_PATH);
     }
 
     /**
@@ -50,7 +50,7 @@ public class LeBron {
      * The main method to start the LeBron application.
      */
     public static void main(String[] args) {
-        new LeBron("data/tasks.txt").run();
+        new LeBron(Constants.DEFAULT_FILE_PATH).run();
     }
 
     /**

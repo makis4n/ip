@@ -1,5 +1,6 @@
 package lebron.command;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -11,6 +12,7 @@ import lebron.task.TaskList;
  * When executed, it displays all tasks with their corresponding numbers.
  */
 public class ListCommand extends Command {
+
     @Override
     public boolean isExit() {
         return false;
@@ -21,25 +23,15 @@ public class ListCommand extends Command {
         validateTaskList(taskList);
         return getTaskListString(taskList);
     }
-    /**
-     * Validates that the task list is not empty.
-     *
-     * @param taskList The task list to validate.
-     * @throws LeBronException If the task list is empty.
-     */
+
     private void validateTaskList(TaskList taskList) throws LeBronException {
         if (taskList.isEmpty()) {
-            throw new LeBronException("No tasks found.");
+            throw new LeBronException(Constants.NO_TASKS_ERROR);
         }
     }
-    /**
-     * Formats the task list into a string for display.
-     *
-     * @param taskList The task list to format.
-     * @return A formatted string of all tasks in the task list.
-     */
+
     private String getTaskListString(TaskList taskList) {
-        StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
+        StringBuilder sb = new StringBuilder(Constants.TASK_LIST_HEADER);
         for (int i = 0; i < taskList.getTasks().size(); i++) {
             Task temp = taskList.getTasks().get(i);
             sb.append(String.format("%d. %s\n", i + 1, temp));

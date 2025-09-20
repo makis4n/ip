@@ -1,5 +1,7 @@
 package lebron.task;
 
+import lebron.common.Constants;
+
 /**
  * Represents a general task with a description and completion status.
  */
@@ -20,7 +22,7 @@ public class Task {
      * Returns status icon of the task
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " ");
+        return (isDone ? Constants.STATUS_ICON_DONE : Constants.STATUS_ICON_NOT_DONE);
     }
 
     /**

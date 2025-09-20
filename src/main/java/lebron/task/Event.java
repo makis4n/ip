@@ -3,6 +3,8 @@ package lebron.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import lebron.common.Constants;
+
 /**
  * Represents a task that is an event occurring over a period of time.
  */
@@ -31,8 +33,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString()
-                + " (from: " + start.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " to: " + end.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return Constants.TYPE_PREFIX_E + super.toString()
+                + " (from: " + start.format(DateTimeFormatter.ofPattern(Constants.DISPLAY_DATE_PATTERN))
+                + " to: " + end.format(DateTimeFormatter.ofPattern(Constants.DISPLAY_DATE_PATTERN)) + ")";
     }
 }

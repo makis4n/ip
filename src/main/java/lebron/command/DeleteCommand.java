@@ -2,6 +2,7 @@ package lebron.command;
 
 import java.util.ArrayList;
 
+import lebron.common.Constants;
 import lebron.exception.LeBronException;
 import lebron.main.Storage;
 import lebron.main.Ui;
@@ -50,7 +51,7 @@ public class DeleteCommand extends Command {
             }
             return taskIndices;
         } catch (NumberFormatException e) {
-            throw new LeBronException("Error: Please enter valid task numbers.");
+            throw new LeBronException(Constants.INVALID_TASK_NUMBER_ERROR);
         }
     }
     /**
@@ -67,10 +68,10 @@ public class DeleteCommand extends Command {
                 removedTasks.append(String.format("%d. %s\n", index + 1, taskList.getTask(index)));
             }
 
-            return String.format("Noted. I've removed the tasks:\n%s\nNow you have %d tasks in the list.%n",
+            return String.format(Constants.REMOVE_TASKS_MESSAGE_FORMAT,
                     removedTasks, taskList.getSize() - tasksToDelete.size());
         } catch (IndexOutOfBoundsException e) {
-            throw new LeBronException("Error: One or more task numbers out of range.");
+            throw new LeBronException(Constants.TASK_NUMBER_OUT_OF_RANGE_ERROR);
         }
     }
 }
